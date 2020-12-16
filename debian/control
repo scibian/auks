@@ -1,0 +1,74 @@
+Source: auks
+Section: admin
+Priority: extra
+Maintainer: Scibian Project <packaging@scibian.org>
+Build-Depends:
+ debhelper (>= 9),
+ autotools-dev,
+ dh-autoreconf,
+ dh-systemd,
+ libkrb5-dev,
+ libslurm-dev,
+Standards-Version: 3.9.5
+Vcs-Git: https://github.com/scibian/auks.git
+Vcs-Browser: https://github.com/scibian/auks
+
+Package: auksd
+Architecture: any
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends},
+Description: Central AUKS daemon
+ This package contains central AUKS daemon.
+
+Package: auksdrenewer
+Architecture: any
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends},
+Description: Kerberos tickets renewer daemon for AUKS
+ This package contains AUKS Kerberos tickets renewer daemon.
+
+Package: aukspriv
+Architecture: any
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends},
+Description: Daemon to ensure Kerberos ticket cache access for AUKS
+ This package contains the daemon which ensures access to Kerberos tickets
+ cache for AUKS components.
+
+Package: auks
+Architecture: any
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends},
+Description: Client command for AUKS
+ This package contains AUKS client command.
+
+Package: libauksapi0
+Architecture: any
+Section: libs
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends},
+Description: Library for AUKS API
+ This package contains AUKS API library.
+
+Package: libauksapi-dev
+Architecture: any
+Section: libdevel
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends},
+ libauksapi0 (= ${binary:Version}),
+Description: Library development headers for AUKS
+ This package contains headers of AUKS API library.
+
+Package: slurm-wlm-spank-plugin-auks
+Architecture: any
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends},
+Description: Slurm SPANK plugin for AUKS
+ This package contains the lurm SPANK plugin for AUKS.

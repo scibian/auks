@@ -1,0 +1,17 @@
+#!/usr/bin/make -f
+
+%:
+	dh ${@} --with autoreconf --with systemd
+
+override_dh_auto_configure:
+	dh_auto_configure -- --with-slurm
+
+override_dh_auto_install:
+	dh_auto_install
+	
+	# Install these files manually Makefile does not take care of them
+	install -D -m 644 etc/auksd.service $(CURDIR)/debian/tmp/lib/systemd/system/auksd.service
+	install -D -m 644 etc/auksdrenewer.service $(CURDIR)/debian/tmp/lib/systemd/system/auksdrenewer.service
+	install -D -m 644 etc/aukspriv.service $(CURDIR)/debian/tmp/lib/systemd/system/aukspriv.service
+	install -D -m 644 etc/auks.acl.example $(CURDIR)/debian/etc/auks/auks.acl
+	install -D -m 644 etc/auks.conf.example $(CURDIR)/debian/etc/auks/auks.conf

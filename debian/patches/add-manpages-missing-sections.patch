@@ -1,0 +1,65 @@
+Description: Add missing sections in manpages titles
+Author: Rémi Palancher <remi-externe.palancher@edf.fr>
+Forwarded: https://github.com/hautreux/auks/pull/48
+Last-Update: 2020-12-17
+
+diff --git a/doc/man/man1/auks.1 b/doc/man/man1/auks.1
+index 75ec13e..595fd79 100644
+--- a/doc/man/man1/auks.1
++++ b/doc/man/man1/auks.1
+@@ -1,4 +1,4 @@
+-.TH "auks" "March 2009" "Matthieu Hautreux" "auks"
++.TH "auks" "1" "March 2009" "Matthieu Hautreux" "auks"
+ 
+ .SH "NAME"
+ auks \- client program to manage AUKS credentials
+diff --git a/doc/man/man5/auks.acl.5 b/doc/man/man5/auks.acl.5
+index 1aefc2a..d310b18 100644
+--- a/doc/man/man5/auks.acl.5
++++ b/doc/man/man5/auks.acl.5
+@@ -1,4 +1,4 @@
+-.TH "auks.acl" "March 2009" "Matthieu Hautreux" "auks.acl"
++.TH "auks.acl" "5" "March 2009" "Matthieu Hautreux" "auks.acl"
+ 
+ 
+ .SH "NAME"
+diff --git a/doc/man/man5/auks.conf.5 b/doc/man/man5/auks.conf.5
+index fa82d66..6e67db8 100644
+--- a/doc/man/man5/auks.conf.5
++++ b/doc/man/man5/auks.conf.5
+@@ -1,4 +1,4 @@
+-.TH "auks.conf" "March 2009" "Matthieu Hautreux" "auks.conf"
++.TH "auks.conf" "5" "March 2009" "Matthieu Hautreux" "auks.conf"
+ 
+ 
+ .SH "NAME"
+diff --git a/doc/man/man8/auksd.8 b/doc/man/man8/auksd.8
+index 91b92bb..cf94ebf 100644
+--- a/doc/man/man8/auksd.8
++++ b/doc/man/man8/auksd.8
+@@ -1,4 +1,4 @@
+-.TH "auksd" "March 2009" "Matthieu Hautreux" "auksd"
++.TH "auksd" "8" "March 2009" "Matthieu Hautreux" "auksd"
+ 
+ .SH "NAME"
+ auksd \- AUKS daemon serves add/get/remove/dump AUKS client requests
+diff --git a/doc/man/man8/auksdrenewer.8 b/doc/man/man8/auksdrenewer.8
+index 5581cc1..cd79a20 100644
+--- a/doc/man/man8/auksdrenewer.8
++++ b/doc/man/man8/auksdrenewer.8
+@@ -1,4 +1,4 @@
+-.TH "auksdrenewer" "March 2009" "Matthieu Hautreux" "auksdrenewer"
++.TH "auksdrenewer" "8" "March 2009" "Matthieu Hautreux" "auksdrenewer"
+ 
+ .SH "NAME"
+ auksdrenewer \- AUKS daemon that handles AUKS credentials renewal
+diff --git a/doc/man/man8/aukspriv.8 b/doc/man/man8/aukspriv.8
+index 57cdd6d..d39a25e 100644
+--- a/doc/man/man8/aukspriv.8
++++ b/doc/man/man8/aukspriv.8
+@@ -1,4 +1,4 @@
+-.TH "aukspriv" "March 2009" "Matthieu Hautreux" "aukspriv"
++.TH "aukspriv" "8" "March 2009" "Matthieu Hautreux" "aukspriv"
+ 
+ .SH "NAME"
+ aukspriv \- AUKS daemon that handles periodical Keytab to TGT operations

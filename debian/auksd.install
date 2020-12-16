@@ -1,0 +1,2 @@
+usr/sbin/auksd
+lib/systemd/system/auksd.service

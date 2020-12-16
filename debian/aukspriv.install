@@ -1,0 +1,2 @@
+usr/sbin/aukspriv
+lib/systemd/system/aukspriv.service
