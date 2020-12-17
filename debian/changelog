@@ -1,3 +1,10 @@
+auks (0.5.0-0sci9u1) scibian9; urgency=medium
+
+  * Build for scibian9
+  * Use debhelper 10
+
+ -- Rémi Palancher <remi-externe.palancher@edf.fr>  Thu, 17 Dec 2020 09:05:48 +0100
+
 auks (0.5.0-0sci8u1) scibian8; urgency=medium
 
   * Initial release
