@@ -1,3 +1,10 @@
+auks (0.5.0-0sci10u1) scibian10; urgency=medium
+
+  * Build for scibian10
+  * Bump compat to 11
+
+ -- Rémi Palancher <remi-externe.palancher@edf.fr>  Thu, 17 Dec 2020 16:27:59 +0100
+
 auks (0.5.0-0sci9u1) scibian9; urgency=medium
 
   * Build for scibian9
