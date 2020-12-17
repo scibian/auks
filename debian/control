@@ -3,7 +3,7 @@ Section: admin
 Priority: extra
 Maintainer: Scibian Project <packaging@scibian.org>
 Build-Depends:
- debhelper (>= 10),
+ debhelper (>= 11),
  libkrb5-dev,
  libslurm-dev,
 Standards-Version: 3.9.5
