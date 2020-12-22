@@ -1,3 +1,10 @@
+auks (0.5.0-0sci8u2) scibian8; urgency=medium
+
+  * Move SYSCONFDIR to /etc/auks
+  * Add 0700 /var/cache/auks dir in aukspriv
+
+ -- Rémi Palancher <remi-externe.palancher@edf.fr>  Tue, 22 Dec 2020 10:30:43 +0100
+
 auks (0.5.0-0sci8u1) scibian8; urgency=medium
 
   * Initial release
