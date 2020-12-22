@@ -1,5 +1,10 @@
 #!/usr/bin/make -f
 
+# AUKS autotools do not support ./configure --sysconfdir=/etc/auks parameter.
+# Upstream only supports setting SYSCONDIR in CFLAGS, as found in upstream
+# auks.spec. With compat >= 9, the right way to extend CFLAGS is the following:
+export DEB_CFLAGS_MAINT_APPEND=-DSYSCONFDIR=\"/etc/auks\"
+
 %:
 	dh ${@}
 
