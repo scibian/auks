@@ -20,3 +20,8 @@ override_dh_auto_install:
 	install -D -m 644 etc/aukspriv.service $(CURDIR)/debian/tmp/lib/systemd/system/aukspriv.service
 	install -D -m 644 etc/auks.acl.example $(CURDIR)/debian/etc/auks/auks.acl
 	install -D -m 644 etc/auks.conf.example $(CURDIR)/debian/etc/auks/auks.conf
+
+override_dh_fixperms:
+	dh_fixperms
+	# restrict access to AUKS cache dir to root by default, mimicking auks.spec
+	chmod 0700 $(CURDIR)/debian/aukspriv/var/cache/auks
