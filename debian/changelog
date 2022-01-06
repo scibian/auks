@@ -1,3 +1,11 @@
+auks (0.5.0-0sci11u1) scibian11; urgency=medium
+
+  * Bump copyright
+  * Add patch for compatibility with libkrb5 1.18
+  * Initial release for scibian11
+
+ -- Rémi Palancher <remi-externe.palancher@edf.fr>  Thu, 06 Jan 2022 15:29:58 +0100
+
 auks (0.5.0-0sci10u2) scibian10; urgency=medium
 
   * Move SYSCONFDIR to /etc/auks
