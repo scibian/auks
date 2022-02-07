@@ -1,3 +1,11 @@
+auks (0.5.3-0sci10u1) scibian10; urgency=medium
+
+  * New upstream release 0.5.3
+  * Remove patchs merged upstream
+  * Update libauksapi0.symbols
+
+ -- Rémi Palancher <remi-externe.palancher@edf.fr>  Mon, 07 Feb 2022 16:51:42 +0100
+
 auks (0.5.0-0sci10u2) scibian10; urgency=medium
 
   * Move SYSCONFDIR to /etc/auks
