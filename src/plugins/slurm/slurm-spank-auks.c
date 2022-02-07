@@ -115,6 +115,8 @@
  */
 SPANK_PLUGIN(auks, 1);
 
+#define CREDCACHE_MAXLENGTH 128
+static char auks_file_credcache[CREDCACHE_MAXLENGTH];
 static char *auks_credcache = NULL;
 
 static char* auks_conf_file = NULL;
@@ -130,6 +132,12 @@ static int auks_spankstack = 0;
 /* enforce auks client stage success when set to 1 (no silent disabling of
  * auks when no ticket is found on the client side) */
 static int auks_enforced = 0;
+
+/* force original file ccache logic when set */
+static int auks_force_file_ccache = 0;
+
+/* ask for krb5_cc_switch by default */
+static int auks_cc_switch = 1;
 
 static uid_t auks_minimum_uid = 0;
 
@@ -420,8 +428,6 @@ spank_auks_remote_init (spank_t sp, int ac, char *av[])
 	int fstatus;
 	auks_engine_t engine;
 
-	char *prev_krb5ccname = NULL;
-
 	static uint32_t jobid;
 	uid_t uid;
 	gid_t gid;
@@ -450,7 +456,10 @@ spank_auks_remote_init (spank_t sp, int ac, char *av[])
 		break;
 	}
 
-	/* Reset auks credcache */
+	/* set default auks cred cache length to 0 */
+	auks_file_credcache[0]='\0';
+
+	/* reset auks credcache */
 	auks_credcache = NULL;
 
 	/* get slurm jobid */
@@ -469,15 +478,6 @@ spank_auks_remote_init (spank_t sp, int ac, char *av[])
 		return (-1);
 	}
 
-	/* force KRB5CCNAME's value if the user wants so */
-	if (auks_hostcredcache_file != NULL) {
-		char *p = getenv("KRB5CCNAME");
-		if ( p != NULL ) {
-			prev_krb5ccname = strdup(p);
-		}
-		setenv("KRB5CCNAME", auks_hostcredcache_file, 1);
-	}
-
 	/* initialize auks API */
 	fstatus = auks_api_init(&engine,auks_conf_file);
 	if ( fstatus != AUKS_SUCCESS ) {
@@ -485,7 +485,11 @@ spank_auks_remote_init (spank_t sp, int ac, char *av[])
 		goto exit;
 	}
 
-	/* Get auks cred */
+	/* force hostcredcache if the spank option ask so */
+	if (auks_hostcredcache_file != NULL)
+		auks_api_set_ccache(&engine, auks_hostcredcache_file);
+
+	/* get auks cred */
 	fstatus = auks_api_get_auks_cred(&engine,uid,&cred);
 	if( fstatus ) {
 		xerror("unable to unpack auks cred from reply : %s",
@@ -494,7 +498,7 @@ spank_auks_remote_init (spank_t sp, int ac, char *av[])
 		goto unload;
 	}
 
-	/* change to user uid and gid before getting cred */
+	/* change to user uid and gid before storing cred */
 	if ( setegid(gid) ) {
 		xerror("unable to switch to user gid : %s",
 		       strerror(errno));
@@ -507,15 +511,43 @@ spank_auks_remote_init (spank_t sp, int ac, char *av[])
 		goto out_cred;
 	}
 
-	fstatus = auks_krb_cc_new_unique(&auks_credcache);
-	if (fstatus) {
-	        xerror("Error while initializing a new unique");
-		goto out_err;
+	/* if force_file_ccache is not set, then use auks_krb_cc_new_unique
+	 * to initialize a new unique ccache using the default ccache type
+	 * of the libkrb5/conf, otherwise revert to original file cache logic */
+	if (!auks_force_file_ccache) {
+		fstatus = auks_krb5_cc_new_unique(&auks_credcache);
+		if (fstatus) {
+			xerror("error while initializing a new unique");
+			goto out_err;
+		}
+	} else {
+		/* build unique file credential cache */
+		fstatus = snprintf(auks_file_credcache,CREDCACHE_MAXLENGTH,
+				   "/tmp/krb5cc_%u_%u_XXXXXX", uid, jobid);
+		if ( fstatus >= CREDCACHE_MAXLENGTH ||
+		     fstatus < 0 ) {
+			xerror("unable to build auks file credcache name");
+			goto out_cred;
+		}
+		omask = umask(S_IRUSR | S_IWUSR);
+		fstatus = mkstemp(auks_file_credcache);
+		umask(omask);
+		if ( fstatus == -1) {
+			xerror("unable to create auks file credcache");
+			goto out_cred;
+		}
+		else
+			close(fstatus);
+		/* dup file ccache location in auks_credcache */
+		auks_credcache = strdup(auks_file_credcache);
+		if (auks_credcache == NULL) {
+			xerror("unable to dup auks_file_credcache");
+			goto out_err;
+		}
 	}
+	xinfo("new unique ccache is %s", auks_credcache);
 
-	xinfo("Initialized ccache %s", auks_credcache);
-
-        /* Store user credential */
+        /* store user credential */
 	fstatus = auks_cred_store(&cred, auks_credcache);
 	if ( fstatus != AUKS_SUCCESS ) {
 		xerror("unable to store cred : %s",
@@ -523,20 +555,31 @@ spank_auks_remote_init (spank_t sp, int ac, char *av[])
 		fstatus = AUKS_ERROR_API_REPLY_PROCESSING ;
 		goto out_err;
 	}
-
 	xinfo("user '%u' cred stored in ccache %s",uid, auks_credcache);
 
-	if ( auks_spankstack ) {
-		setenv("KRB5CCNAME",auks_credcache,1);
+	/* if force_file_ccache is not set and we were not asked to avoid
+	   switching the default ccache to this new one, then do it */
+	if (!auks_force_file_ccache && auks_cc_switch) {
+		fstatus = auks_krb5_cc_switch(auks_credcache);
+		if ( fstatus != AUKS_SUCCESS ) {
+			xerror("warning : krb5_cc_switch to cred %s failed : %s",
+			       auks_credcache, auks_strerror(fstatus));
+			/* just continue in case of error, no big deal */
+			fstatus = AUKS_SUCCESS ;
+		}
 	}
 
-	/* Set KRBCCNAME in user env */
+	if ( auks_spankstack ) {
+		setenv("KRB5CCNAME", auks_credcache, 1);
+	}
+
+	/* set KRBCCNAME in user env */
 	fstatus = spank_setenv(sp,"KRB5CCNAME",auks_credcache,1);
 	if ( fstatus != 0 )
 		xerror("unable to set KRB5CCNAME env var");
 
  out_cred:
-	/* Free auks cred */
+	/* free auks cred */
 	auks_cred_free_contents(&cred);
 
  unload:
@@ -551,9 +594,12 @@ exit:
 	return (fstatus);
 
 out_err:
+	if (auks_file_credcache[0] != '\0') {
+		unlink(auks_file_credcache);
+		auks_file_credcache[0]='\0';
+	}
 	if (auks_credcache != NULL)
-	  free(auks_credcache);
-
+		free(auks_credcache);
 	goto out_cred;
 }
 
@@ -618,7 +664,7 @@ spank_auks_remote_exit (spank_t sp, int ac, char **av)
 	_sync_fs();
 
 	/* Destroy all krb5 ccache */
-	fstatus = auks_krb_cc_destroy(auks_credcache);
+	fstatus = auks_krb5_cc_destroy(auks_credcache);
 	if (fstatus) {
 	      xerror("Unable to destroy ccache %s",auks_credcache);
 	      goto out;
@@ -759,6 +805,12 @@ _parse_plugstack_conf (spank_t sp, int ac, char *av[])
 		}
 		else if (strncmp ("enforced", av[i], 8) == 0) {
 		        auks_enforced = 1;
+		}
+		else if (strncmp ("force_file_ccache", av[i], 17) == 0) {
+		        auks_force_file_ccache = 1;
+		}
+		else if (strncmp ("no_cc_switch", av[i], 12) == 0) {
+		        auks_cc_switch = 0;
 		}
 		else if (strncmp ("minimum_uid=", av[i], 12) == 0) {
 		        auks_minimum_uid = (uid_t) strtol(av[i]+12,NULL,10);
