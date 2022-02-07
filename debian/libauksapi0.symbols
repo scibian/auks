@@ -78,6 +78,9 @@ libauksapi.so.0 libauksapi0 #MINVER#
  auks_engine_init_from_config_file@Base 0.0.1
  auks_engine_set_logfile@Base 0.0.1
  auks_engine_set_loglevel@Base 0.0.1
+ auks_krb5_cc_destroy@Base 0.5.3
+ auks_krb5_cc_new_unique@Base 0.5.3
+ auks_krb5_cc_switch@Base 0.5.3
  auks_krb5_cred_deladdr_buffer@Base 0.0.1
  auks_krb5_cred_get@Base 0.0.1
  auks_krb5_cred_get_fwd@Base 0.0.1
@@ -98,8 +101,8 @@ libauksapi.so.0 libauksapi0 #MINVER#
  auks_krb5_stream_send_msg@Base 0.0.1
  auks_krb5_stream_srv_auth@Base 0.0.1
  auks_krb5_stream_srv_init@Base 0.0.1
- auks_krb_cc_destroy@Base 0.0.1
- auks_krb_cc_new_unique@Base 0.0.1
+#MISSING: 0.5.3# auks_krb_cc_destroy@Base 0.0.1
+#MISSING: 0.5.3# auks_krb_cc_new_unique@Base 0.0.1
  auks_message_data@Base 0.0.1
  auks_message_free_contents@Base 0.0.1
  auks_message_init@Base 0.0.1
