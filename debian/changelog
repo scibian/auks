@@ -1,3 +1,9 @@
+auks (0.5.3-0sci11u3) scibian11; urgency=medium
+
+  * enforce slurm version to 23.2
+
+ -- Kwame Amedodji <kwame-externe.amedodji@edf.fr>  Thu, 14 Dec 2023 13:59:11 +0100
+
 auks (0.5.3-0sci11u2) scibian11; urgency=medium
 
   * Rebuild with Slurm 21.08
