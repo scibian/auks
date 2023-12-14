@@ -8,7 +8,7 @@ Build-Depends:
  dh-autoreconf,
  dh-systemd,
  libkrb5-dev,
- libslurm-dev,
+ libslurm-dev (>= 23.02.3),
 Standards-Version: 3.9.5
 Vcs-Git: https://github.com/scibian/auks.git
 Vcs-Browser: https://github.com/scibian/auks
