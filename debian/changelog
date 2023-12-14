@@ -1,3 +1,13 @@
+auks (0.5.3-0sci8u2) scibian8; urgency=medium
+
+  [ Rémi Palancher ]
+  * New upstream version 0.5.3
+
+  [ Kwame Amedodji ]
+  * enforce slurm version to 23.2
+
+ -- Kwame Amedodji <kwame-externe.amedodji@edf.fr>  Thu, 14 Dec 2023 14:22:10 +0100
+
 auks (0.5.0-0sci8u2) scibian8; urgency=medium
 
   * Move SYSCONFDIR to /etc/auks
