@@ -1,3 +1,9 @@
+auks (0.5.3-0sci10u2) scibian10; urgency=medium
+
+  * enforce slurm version to 23.2
+
+ -- Kwame Amedodji <kwame-externe.amedodji@edf.fr>  Thu, 14 Dec 2023 13:56:44 +0100
+
 auks (0.5.3-0sci10u1) scibian10; urgency=medium
 
   * New upstream release 0.5.3
