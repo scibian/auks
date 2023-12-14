@@ -1,5 +1,5 @@
 dnl Package initialisation
-AC_INIT([auks],[0.5.0],[matthieu.hautreux@cea.fr])
+AC_INIT([auks],[0.5.3],[matthieu.hautreux@cea.fr])
 
 dnl Auxiliary scripts directory
 AC_CONFIG_AUX_DIR([build-aux])
@@ -17,12 +17,13 @@ dnl Autoconf header file to generate
 AC_CONFIG_HEADERS([config.h])
 
 dnl In order to build lib using Autotools .la format
+AM_PROG_AR
 AC_PROG_LIBTOOL
 m4_pattern_allow([AM_PROG_AR])
-AM_PROG_AR
 
 dnl This is a C project
 AC_PROG_CC
+AM_PROG_CC_C_O
 
 dnl This project uses lex an yacc internaly
 AC_PROG_LEX
