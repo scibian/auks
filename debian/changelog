@@ -1,3 +1,9 @@
+auks (0.5.3-0sci12u1) scibian12; urgency=medium
+
+  * Scibian12 version
+
+ -- Thomas HAMEL <thomas-t.hamel@edf.fr>  Mon, 30 Dec 2024 17:12:54 +0100
+
 auks (0.5.3-0sci11u3) scibian11; urgency=medium
 
   * enforce slurm version to 23.2
