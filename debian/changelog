@@ -1,3 +1,10 @@
+auks (0.5.3-0sci13u1) scibian13; urgency=medium
+
+  * Fix build with GCC14 on Scibian13
+  * Use single-debian-patch
+
+ -- Farid CHABANE <farid-externe.chabane@edf.fr>  Fri, 30 Jan 2026 18:44:03 +0100
+
 auks (0.5.3-0sci12u3) scibian12; urgency=medium
 
   * Bump to slurm 25.05
