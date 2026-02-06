@@ -99,7 +99,6 @@
 
 #define xerror(h,a...) slurm_error(AUKS_HEADER h,##a)
 #define xinfo(h,a...) slurm_verbose(AUKS_HEADER h,##a)
-#define xdebug(h,a...) slurm_debug(AUKS_HEADER h,##a)
 
 #define AUKS_MODE_DISABLED  0
 #define AUKS_MODE_ENABLED   1

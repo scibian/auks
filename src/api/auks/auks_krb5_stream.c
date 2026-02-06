@@ -102,8 +102,6 @@ extern int errno;
 #include "auks/auks_krb5_stream.h"
 #include "auks/auks_log.h"
 
-extern krb5_error_code krb5_read_message(krb5_context, krb5_pointer, krb5_data *);
-extern krb5_error_code krb5_write_message(krb5_context, krb5_pointer, krb5_data *);
 
 /* private functions definitions */
 #define LOCAL_PRINCIPAL 1
