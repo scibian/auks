@@ -1,3 +1,9 @@
+auks (0.5.3-0sci9u5) scibian9; urgency=medium
+
+  * Bump to slurm 25.11
+
+ -- Farid CHABANE <farid-externe.chabane@edf.fr>  Fri, 07 Aug 2026 10:59:12 +0200
+
 auks (0.5.3-0sci9u4) scibian9; urgency=medium
 
   * Bump to slurm 25.05
